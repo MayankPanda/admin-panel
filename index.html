@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Firebase Web Basics</title>
+
+	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700" rel="stylesheet">
+
+	<script src="https://use.fontawesome.com/939e9dd52c.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy" crossorigin="anonymous"></script>
+
+
+  <style>
+    h1{
+      color: mediumblue;
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+
+	<div class="mainDiv">
+		<h1>Marker Image Upload</h1>
+		<progress id="uploader" value="0" max="100">0%</progress>
+		<input type="file" id="fileButton" value="upload"/>
+    <br>
+    <h1>3D File Upload</h1>
+		<progress id="uploader2" value="0" max="100">0%</progress>
+		<input type="file" id="fileButton2" value="upload"/>
+	</div>
+
+
+
+<script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "XXX",
+      appId: "1:715270643827:android:19e5720830c072299b0a06",
+      messagingSenderId: "715270643827",
+      projectId: "marker-60283",
+      storageBucket: "gs://marker-60283.appspot.com",
+  };
+  firebase.initializeApp(config);
+  //-------------------------------------
+  
+  var uploader = document.getElementById('uploader');
+  var fileButton =         document.getElementById('fileButton');
+  fileButton.addEventListener('change', function(e){
+  var file = e.target.files[0];
+  var storageRef = firebase.storage().ref('marker_images/'+file.name);
+  var task = storageRef.put(file);
+  task.on('state_changed', function progress(snapshot) {
+    var percentage = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    uploader.value = percentage;
+
+  }, function error(err) {
+
+
+  },function complete() {
+
+  });
+});  
+var uploader2 = document.getElementById('uploader2');
+  var fileButton =         document.getElementById('fileButton2');
+  fileButton.addEventListener('change', function(e){
+  var file = e.target.files[0];
+  var storageRef = firebase.storage().ref('objects/'+file.name);
+  var task = storageRef.put(file);
+  task.on('state_changed', function progress(snapshot) {
+    var percentage = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+    uploader2.value = percentage;
+
+  }, function error(err) {
+
+
+  },function complete() {
+
+  });
+});  
+  
+  
+</script>
+
+<script src="fileup.js">
+</script>
+</body>
+</html>
